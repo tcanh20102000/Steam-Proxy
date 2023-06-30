@@ -1,13 +1,13 @@
 var express = require("express");
 var cors = require("cors");
 
-var getMultiAppRouter = require("./routes/getNAppsAPI.js");
-var homeRouter = require("./routes/homeAPI.js");
-var getSingleAppRouter = require("./routes/getAppDetail.js");
+var getMultiAppRouter = require("../routes/getNAppsAPI.js");
+var homeRouter = require("../routes/homeAPI.js");
+var getSingleAppRouter = require("../routes/getAppDetail.js");
 
 
 
-var app = express();
+const app = express();
 
 app.use(cors());
 app.use('/', homeRouter);
@@ -24,3 +24,5 @@ app.use("/get_multi_apps", getMultiAppRouter);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, console.log(`Server started on PORT${PORT}`));
+
+module.exports = app;
