@@ -84,13 +84,10 @@ router.get("/app/:appId", function (req, res) {
   });
 });
 
-router.get("/appreviews/:appId", function (req, res) {
-  console.log("Here getApp review");
-  //res.send("API is working properly");
+router.get("/app/:appId", function (req, res) {
+  console.log("Here getApp detail");
   let gameId = req.params.appId;
 
-  // let input_params1 = { appids: gameId };
-  // var params1 = new URLSearchParams(input_params1);
 
   let input_params2 = {  json: 1, language: "all" };
   var params2 = new URLSearchParams(input_params2);
@@ -122,16 +119,20 @@ router.get("/app_and_reviews/:appId", function (req, res) {
     if (!ret) {
       res.send([]);
     }
-    //console.log("random ,", data, "end");
     
-    //ret = Object.values(firstResponse)[0];
-    const [firstResponse, secondResponse] = [...ret];
-    let result = firstResponse.data;
-    delete secondResponse.data["success"];
+    if(!typeof ret[Symbol.iterator] === 'function'){
+      console.log('Error');
+      res.send([])
+    }
+    else{
+      const [firstResponse, secondResponse] = [...ret];
+      let result = firstResponse.data;
+      delete secondResponse.data["success"];
 
-    result[`${gameId}`].data.customer_review = secondResponse.data;
-    
-    res.send(result);
+      result[`${gameId}`].data.customer_review = secondResponse.data;
+      
+      res.send(result);
+    }
   });
 });
 
