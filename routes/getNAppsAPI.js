@@ -10,7 +10,9 @@ const STEAMKEY = "E0D30EBED9AC4899862E1B97F33B21C0";
 
 const STEAM_SPY_API = "https://steamspy.com/api.php";
 
+
 const default_limit = 20;
+const default_genre = 'RPG';
 
 const fetchData = async (res, URL, params) => {
   let ret = [];
@@ -49,9 +51,9 @@ function getRandom(arr, limit) {
   }
     //throw new RangeError("getRandom: more elements taken than available");
   while (limit--) {
-    var x = Math.floor(Math.random() * len);
+    let x = Math.floor(Math.random() * len);
     result[limit] = dup_arr[x];
-    console.log("delete index", x, " value", dup_arr[x]);
+    
     const halfBeforeUnwantedUnit = dup_arr.slice(0, x);
     const halfAfterUnwantedUnit = dup_arr.slice(x + 1);
     dup_arr = halfBeforeUnwantedUnit.concat(halfAfterUnwantedUnit);
@@ -61,51 +63,35 @@ function getRandom(arr, limit) {
 }
 
 
-router.get("/getAllApp", function (req, res) {
+router.get("/get_all", function (req, res) {
     console.log('Here getAllApp');
     let Steam_api_params = { key: STEAMKEY, format: "json" };
     var params = new URLSearchParams(Steam_api_params);
 
-    
-    // const fetchData = async () => {
-    //   console.log("fetching...");
-    //   try {
-    //     const res1 = await axios.get(URL, {
-    //       //headers: { "Access-Control-Allow-Origin": "*" },
-    //       params: {
-    //         key: STEAMKEY,
-    //         format: "json",
-    //       },
-    //       timeout: TIMEOUT,
-    //     });
-    //     if (res1 != null) {
-    //       console.log("Hee");
-    //       console.log("res.data", res1);
-    //       res.send(res1.data);
-    //       console.log("Done fetch");
-    //     }
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-
-    // };
-
-    
     fetchData(res, STEAM_URL, Steam_api_params);
     //res.send("API is working properly");
 });
 
-router.get("/getSpecGenreApp", function (req, res) {
-  console.log("Here getSpecGenreApp");
-  let in_params = { request: 'genre', genre: 'RPG'};
+router.get("/get_in_genre/:genre", function (req, res) {
+
+  const STEAM_GENRE_API =
+    `https://store.steampowered.com/contenthub/
+    ajaxgetcontenthubdata?hubtype=category&category=rpg`;
+  console.log("Here get genre ", req.params.genre);
+
+  let genre = req.params.genre ? req.params.genre : default_genre;
+  let in_params = { request: 'genre', genre: genre};
+
   var params = new URLSearchParams(in_params);
 
 
-  fetchData(res, STEAM_SPY_API, params);
+  fetchData(res, STEAM_SPY_API, params).then((ret)=>{
+    res.send(ret.slice(0,10));
+  })
   //res.send("API is working properly");
 });
 
-router.get("/getTop100App", function (req, res) {
+router.get("/get_top_100", function (req, res) {
   console.log("Here getTop100App");
   let in_params = { request: "top100in2weeks" };
   var params = new URLSearchParams(in_params);
@@ -128,7 +114,6 @@ router.get("/get_random/", function (req, res) {
         res.send([]);
       }
       const data = getRandom(ret, limit);
-      //console.log("random ,", data, "end");
       res.send(data);
     })
   //res.send("API is working properly");
