@@ -19,7 +19,7 @@ const fetchData = async (res, URL, params) => {
       timeout: TIMEOUT,
     });
     if (res1 != null && res1.data != null) {
-      console.log(res1.data);
+      //console.log(res1.data);
       
       ret = res1.data;
       console.log("ret length", ret.length);
@@ -79,7 +79,7 @@ router.get("/app/:appId", function (req, res) {
     if (!ret) {
       res.send([]);
     }
-    //console.log("random ,", data, "end");
+    
     res.send(ret);
   });
 });
@@ -96,7 +96,7 @@ router.get("/app/:appId", function (req, res) {
     if (!ret) {
       res.send([]);
     }
-    //console.log("random ,", data, "end");
+    
     res.send(ret);
   });
 });
