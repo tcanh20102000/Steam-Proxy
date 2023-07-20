@@ -14,6 +14,7 @@ GetNAppsAPI
  Has four functions: get games in particular genres, get random games, get all games and get top 100.
  1) Get games in particular genres
   - Has the address "/get_in_genre/:genre". You can access it with the syntax 'https://steam-proxy.vercel.app/get_multi_apps/get_in_genre/:genre' with the genre is limit to the list of genres that Steam API support.
+    
     Ex: 'https://steam-proxy.vercel.app/get_multi_apps/get_in_genre/casual' will return info about some apps, while 'https://steam-proxy.vercel.app/get_multi_apps/get_in_genre/science_fiction' (an accessible genre in Steam official website) yield empty.
   - For more detail about that list, access https://steamspy.com/about and go to Genres menu.
     
