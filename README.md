@@ -10,8 +10,8 @@ Constrast with the above sentence, this webserver made requests to both SteamAPI
 
 There are two main routes in this webserver, GetNAppsAPI with address "/get_multi_apps/" and GetAppDetail with address "/get_app_detail/".
 
-GetNAppsAPI
- Has four functions: get games in particular genres, get random games, get all games and get top 100.
+GetNAppsAPI has four functions: get games in particular genres, get random games, get all games and get top 100.
+
  1) Get games in particular genres
   - Has the address "/get_in_genre/:genre". You can access it with the syntax 'https://steam-proxy.vercel.app/get_multi_apps/get_in_genre/:genre' with the genre is limit to the list of genres that Steam API support.
     
