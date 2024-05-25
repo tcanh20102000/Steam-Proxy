@@ -8,7 +8,7 @@ const TIMEOUT = 30000;
 const STEAM_URL = "http://api.steampowered.com/ISteamApps/GetAppList/v0002/";
 const STEAMKEY = "E0D30EBED9AC4899862E1B97F33B21C0";
 
-const STEAM_SPY_API = "https://steamspy.com/api.php";
+const STEAM_SPY_API = "https://steamspy.com/api.php?";
 
 
 const default_limit = 20;
@@ -16,30 +16,38 @@ const default_genre = 'RPG';
 
 const fetchData = async (res, URL, params) => {
   let ret = [];
-  console.log('fetching...');
+  console.log('fetching...', URL + params);
   try {
-    const res1 = await axios.get(URL, {
+    const res1 = await fetch(URL + params, {
       //headers: { "Access-Control-Allow-Origin": "*" },
-      params: params,
-      timeout: TIMEOUT,
-    });
-    if (res1 != null && res1.data!= null) {
-
-      Object.keys(res1.data).forEach(function (key) {
+      method: "GET",
+      cache: "no-cache"
+    })
+    .then(response => response.json())
+    .then(data => {
+      Object.keys(data).forEach(function (key) {
         var obj = {};
-        obj = res1.data[key];
+        obj = data[key];
         ret.push(obj); 
       });
+    })
+    .catch(error => console.error(error));
 
-      console.log('ret length', ret.length);
-      //res.send(ret);
-      console.log("Done fetch");
-    }
+    // if (res1 != null && res1.data!= null) {
+    //   Object.keys(res1.data).forEach(function (key) {
+    //     var obj = {};
+    //     obj = res1.data[key];
+    //     ret.push(obj); 
+    //   });
+
+    //   console.log('ret length', ret.length);
+    //   //res.send(ret);
+    // }
   } catch (err) {
     console.log(err);
   }
   
-  return ret;
+  return ret.slice(0, 10);
 };
 
 function getRandom(arr, limit) {
@@ -86,7 +94,8 @@ router.get("/get_in_genre/:genre", function (req, res) {
 
 
   fetchData(res, STEAM_SPY_API, params).then((ret)=>{
-    res.send(ret.slice(0,10));
+    console.log('ret', ret);
+    res.send(ret);
   })
   //res.send("API is working properly");
 });
